@@ -41,8 +41,18 @@ class BurgerBuilder extends Component {
     }
 
     purchaseContinueHandler = () => {
-        this.setState({loading: true});
-        const order = {
+        const queryParams = [];
+        for (let i in this.state.ingredients) {
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
+        }
+        queryParams.push('price=' + this.state.totalPrice.toFixed(2));
+        const queryString = queryParams.join('&');
+        this.props.history.push({
+            pathname: '/checkout',
+            search: '?' + queryString
+        });
+        /**this.setState({loading: true});
+         const order = {
             ingredients: this.state.ingredients,
             price: this.state.totalPrice.toFixed(2),
             customer: {
@@ -63,6 +73,7 @@ class BurgerBuilder extends Component {
             .catch(error => {
                 this.setState({loading: false, purchasing: false});
             });
+         **/
     }
 
     purchaseHandler = () => {
